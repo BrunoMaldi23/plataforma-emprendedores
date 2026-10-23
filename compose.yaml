@@ -1,0 +1,14 @@
+# PostgreSQL local SOLO para desarrollo (puerto 5433 para no chocar con otro PostgreSQL en 5432). Credenciales de ejemplo, no usar en otros entornos.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: nexora
+      POSTGRES_USER: nexora
+      POSTGRES_PASSWORD: nexora
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - nexora-db:/var/lib/postgresql/data
+volumes:
+  nexora-db:

@@ -1,0 +1,32 @@
+import type { ReactNode } from "react";
+import { Container } from "@/components/ui/container";
+import { DemoBadge } from "@/components/ui/badge";
+import { SectionNav, type NavItem } from "./section-nav";
+
+/** Estructura común de las áreas privadas (emprendedor y administración). */
+export function PanelShell({
+  title,
+  navLabel,
+  items,
+  children,
+}: {
+  title: string;
+  navLabel: string;
+  items: NavItem[];
+  children: ReactNode;
+}) {
+  return (
+    <Container className="py-8">
+      <div className="grid gap-8 lg:grid-cols-[220px_1fr]">
+        <aside className="space-y-4">
+          <div className="space-y-2">
+            <p className="font-display text-lg font-bold">{title}</p>
+            <DemoBadge />
+          </div>
+          <SectionNav items={items} label={navLabel} />
+        </aside>
+        <div className="min-w-0 space-y-8">{children}</div>
+      </div>
+    </Container>
+  );
+}

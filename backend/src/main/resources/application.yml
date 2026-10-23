@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: nexora-api
+  datasource:
+    # Valores por defecto SOLO para desarrollo local (ver compose.yaml). En otros entornos se definen por variables de entorno.
+    url: ${NEXORA_DB_URL:jdbc:postgresql://localhost:5433/nexora}
+    username: ${NEXORA_DB_USER:nexora}
+    password: ${NEXORA_DB_PASSWORD:nexora}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate # el esquema lo gestiona Flyway, no Hibernate
+  flyway:
+    # db/demo contiene datos FICTICIOS. En producción se quita de esta lista.
+    locations: ${NEXORA_FLYWAY_LOCATIONS:classpath:db/migration,classpath:db/demo}
+
+server:
+  port: ${PORT:8080}
+
+nexora:
+  cors:
+    allowed-origins: ${NEXORA_CORS_ORIGINS:http://localhost:3000}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
