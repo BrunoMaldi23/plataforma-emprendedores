@@ -17,11 +17,14 @@ export function DataTable<T>({
   columns,
   rows,
   rowKey,
+  rowClassName,
 }: {
   caption: string;
   columns: Column<T>[];
   rows: T[];
   rowKey: (row: T) => string;
+  /** Clase opcional por fila (por ejemplo, para resaltar la que acaba de cambiar). */
+  rowClassName?: (row: T) => string | undefined;
 }) {
   const primary = columns.find((c) => c.primary) ?? columns[0];
   const secondary = columns.filter((c) => c !== primary);
@@ -42,7 +45,7 @@ export function DataTable<T>({
           </thead>
           <tbody className="divide-y divide-line">
             {rows.map((row) => (
-              <tr key={rowKey(row)}>
+              <tr key={rowKey(row)} className={rowClassName?.(row)}>
                 {columns.map((c) => (
                   <td key={c.header} className="px-4 py-3 align-middle">
                     {c.cell(row)}
@@ -56,7 +59,7 @@ export function DataTable<T>({
 
       <ul className="space-y-3 md:hidden" aria-label={caption}>
         {rows.map((row) => (
-          <li key={rowKey(row)} className="rounded-lg border border-line bg-surface p-4">
+          <li key={rowKey(row)} className={`rounded-lg border border-line bg-surface p-4 ${rowClassName?.(row) ?? ""}`}>
             <div className="font-semibold">{primary.cell(row)}</div>
             <dl className="mt-3 space-y-2 text-sm">
               {secondary.map((c) => (

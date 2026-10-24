@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
-import { PageHeader } from "@/components/ui/page-header";
 import { OpportunitiesAdmin } from "@/features/admin/components/opportunities-admin";
-import { listOpportunities } from "@/lib/repository";
+
+// El rol del prototipo solo existe en el cliente (RoleGate): la ruta no se valida como navegación instantánea hasta que la
+// autorización pase al servidor (ver docs/ARQUITECTURA.md).
+export const instant = false;
 
 export const metadata: Metadata = { title: "Gestión de oportunidades" };
 
 export default function AdminOpportunitiesPage() {
-  return (
-    <>
-      <PageHeader title="Oportunidades" description="Publica, despublica o cierra convocatorias." />
-      <OpportunitiesAdmin initial={listOpportunities({ includeUnpublished: true })} />
-    </>
-  );
+  return <OpportunitiesAdmin />;
 }

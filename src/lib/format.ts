@@ -17,6 +17,12 @@ export function formatDate(iso: string): string {
   return `${day} ${months[month - 1]} ${year}`;
 }
 
+/** Acepta yyyy-mm-dd o yyyy-mm-ddThh:mm; agrega la hora cuando existe. */
+export function formatDateTime(iso: string): string {
+  const [date, time] = iso.split("T");
+  return time ? `${formatDate(date)}, ${time.slice(0, 5)}` : formatDate(date);
+}
+
 export const opportunityTypeLabel: Record<OpportunityType, string> = {
   feria: "Feria",
   capacitacion: "Capacitación",

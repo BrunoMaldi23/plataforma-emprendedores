@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { ArrowLeftRight, LayoutDashboard, LogOut, Menu, X } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { buttonClasses } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import { roleHome, roleLabel } from "@/lib/permissions";
 import { useDemoRole } from "@/features/auth/demo-session";
+import { useDemoSignOut } from "@/features/auth/sign-out";
+import { AccountMenu } from "./account-menu";
 import { Logo } from "./logo";
 
 const links = [
@@ -24,6 +26,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const role = useDemoRole();
   const [open, setOpen] = useState(false);
+  const signOut = useDemoSignOut();
 
   const signedIn = role !== null && role !== "visitor";
   const close = () => setOpen(false);
@@ -37,7 +40,8 @@ export function SiteHeader() {
       >
         Saltar al contenido
       </a>
-      <Container className="flex h-16 items-center justify-between gap-4">
+      {/* En escritorio: logo | navegación centrada | acciones. La navegación no se mueve aunque cambie el ancho de las acciones. */}
+      <Container className="flex h-16 items-center justify-between gap-4 md:grid md:grid-cols-[1fr_auto_1fr]">
         <Logo />
 
         <nav aria-label="Principal" className="hidden items-center gap-1 md:flex">
@@ -56,11 +60,9 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-2 md:flex md:justify-self-end">
           {signedIn && role ? (
-            <Link href={roleHome[role]} className={buttonClasses("secondary", "md")}>
-              Ir a mi panel ({roleLabel[role]})
-            </Link>
+            <AccountMenu role={role} />
           ) : (
             <>
               <Link href="/login" className={buttonClasses("ghost", "md")}>
@@ -103,9 +105,30 @@ export function SiteHeader() {
             </nav>
             <div className="mt-3 flex flex-col gap-3 border-t border-line pt-4">
               {signedIn && role ? (
-                <Link href={roleHome[role]} onClick={close} className={buttonClasses("primary", "lg")}>
-                  Ir a mi panel ({roleLabel[role]})
-                </Link>
+                <>
+                  <p className="px-1 text-sm text-muted">
+                    Sesión de demostración: <span className="font-semibold text-ink">{roleLabel[role]}</span>
+                  </p>
+                  <Link href={roleHome[role]} onClick={close} className={buttonClasses("primary", "lg")}>
+                    <LayoutDashboard aria-hidden="true" className="size-5" />
+                    Ir a mi panel
+                  </Link>
+                  <Link href="/login" onClick={close} className={buttonClasses("secondary", "lg")}>
+                    <ArrowLeftRight aria-hidden="true" className="size-5" />
+                    Cambiar de rol
+                  </Link>
+                  <button
+                    type="button"
+                    className={buttonClasses("ghost", "lg")}
+                    onClick={() => {
+                      close();
+                      signOut();
+                    }}
+                  >
+                    <LogOut aria-hidden="true" className="size-5" />
+                    Salir
+                  </button>
+                </>
               ) : (
                 <>
                   <Link href="/registro" onClick={close} className={buttonClasses("primary", "lg")}>

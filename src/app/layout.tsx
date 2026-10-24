@@ -25,7 +25,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={`${display.variable} ${sans.variable} h-full antialiased`}>
+    <html
+      lang="es"
+      // Next desactiva el desplazamiento suave solo durante los cambios de ruta; los enlaces internos (#contacto) siguen siendo suaves.
+      data-scroll-behavior="smooth"
+      className={`${display.variable} ${sans.variable} h-full antialiased`}
+    >
       <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );

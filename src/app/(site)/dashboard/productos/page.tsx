@@ -3,6 +3,10 @@ import { PageHeader } from "@/components/ui/page-header";
 import { OfferingsManager } from "@/features/dashboard/components/offerings-manager";
 import { getDemoBusiness, getOfferingsFor } from "@/lib/repository";
 
+// El rol del prototipo solo existe en el cliente (RoleGate): la ruta no se valida como navegación instantánea hasta que la
+// autorización pase al servidor (ver docs/ARQUITECTURA.md).
+export const instant = false;
+
 export const metadata: Metadata = { title: "Productos y servicios" };
 
 export default function OfferingsPage() {

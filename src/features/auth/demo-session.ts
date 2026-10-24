@@ -6,7 +6,7 @@ import type { Role } from "@/types";
 /**
  * Sesión de DEMOSTRACIÓN. Guarda solo el rol elegido en localStorage del navegador.
  * No es autenticación ni seguridad: cualquiera puede cambiarlo. La autorización real
- * (Spring Security + JWT + verificación en el backend) es la siguiente fase.
+ * (sesión real y verificación en el servidor del backend) es la siguiente fase.
  */
 const KEY = "nexora-demo-role";
 const EVENT = "nexora-demo-role-change";

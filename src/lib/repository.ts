@@ -7,10 +7,10 @@ import {
   offerings,
   opportunities,
 } from "@/data";
-import type { Business, Category, Offering, Opportunity } from "@/types";
+import type { Business, Category, Offering, OfferingStats, Opportunity } from "@/types";
 
 /**
- * Punto único de acceso a datos. Hoy lee datos ficticios; al conectar la API de Spring Boot
+ * Punto único de acceso a datos. Hoy lee datos ficticios; al conectar el backend
  * se reemplaza la implementación manteniendo estas firmas (principio D de SOLID).
  */
 
@@ -32,6 +32,17 @@ export function getBusinessBySlug(slug: string): Business | undefined {
 
 export function getOfferingsFor(businessId: string): Offering[] {
   return offerings.filter((o) => o.businessId === businessId);
+}
+
+export function getOfferingStats(businessId: string): OfferingStats {
+  const items = getOfferingsFor(businessId);
+  const prices = items.flatMap((o) => (o.priceClp ? [o.priceClp] : []));
+  return { count: items.length, fromPriceClp: prices.length ? Math.min(...prices) : undefined };
+}
+
+/** Estadísticas de oferta por id de negocio, para las tarjetas del catálogo. */
+export function listOfferingStats(): Record<string, OfferingStats> {
+  return Object.fromEntries(listBusinesses().map((b) => [b.id, getOfferingStats(b.id)]));
 }
 
 export function listOpportunities(options: { includeUnpublished?: boolean } = {}): Opportunity[] {

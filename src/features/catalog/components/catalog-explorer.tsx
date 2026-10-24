@@ -6,7 +6,7 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { SelectField, TextField } from "@/components/ui/field";
-import type { Business, Category } from "@/types";
+import type { Business, Category, OfferingStats } from "@/types";
 import { emptyCatalogFilters, filterBusinesses, hasActiveFilters, type CatalogFilters } from "../lib/filter";
 import { BusinessCard } from "./business-card";
 
@@ -14,9 +14,10 @@ interface Props {
   businesses: Business[];
   categories: Category[];
   locations: string[];
+  stats: Record<string, OfferingStats>;
 }
 
-export function CatalogExplorer({ businesses, categories, locations }: Props) {
+export function CatalogExplorer({ businesses, categories, locations, stats }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -30,6 +31,7 @@ export function CatalogExplorer({ businesses, categories, locations }: Props) {
   const filters: CatalogFilters = { query, category, location };
 
   const results = filterBusinesses(businesses, filters);
+  const categoryNames = new Map(categories.map((c) => [c.id, c.name]));
 
   function syncUrl(next: CatalogFilters) {
     const search = new URLSearchParams();
@@ -118,10 +120,10 @@ export function CatalogExplorer({ businesses, categories, locations }: Props) {
           }
         />
       ) : (
-        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {results.map((b) => (
             <li key={b.id}>
-              <BusinessCard business={b} />
+              <BusinessCard business={b} categoryName={categoryNames.get(b.categoryId)} stats={stats[b.id]} />
             </li>
           ))}
         </ul>

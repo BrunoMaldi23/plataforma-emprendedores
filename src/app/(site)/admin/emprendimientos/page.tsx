@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
-import { PageHeader } from "@/components/ui/page-header";
 import { BusinessesAdmin } from "@/features/admin/components/businesses-admin";
-import { listBusinesses, listCategories } from "@/lib/repository";
+
+// El rol del prototipo solo existe en el cliente (RoleGate): la ruta no se valida como navegación instantánea hasta que la
+// autorización pase al servidor (ver docs/ARQUITECTURA.md).
+export const instant = false;
 
 export const metadata: Metadata = { title: "Gestión de emprendimientos" };
 
 export default function AdminBusinessesPage() {
-  return (
-    <>
-      <PageHeader title="Emprendimientos" description="Revisa, aprueba u oculta perfiles." />
-      <BusinessesAdmin initial={listBusinesses({ includeUnapproved: true })} categories={listCategories()} />
-    </>
-  );
+  return <BusinessesAdmin />;
 }

@@ -9,6 +9,8 @@ export interface NavItem {
   label: string;
   /** Si es true, solo está activo con coincidencia exacta (p. ej. el resumen). */
   exact?: boolean;
+  /** Contador opcional (por ejemplo, pendientes de revisión). */
+  badge?: number;
 }
 
 /** Navegación lateral en escritorio; en móvil se reorganiza en una cuadrícula táctil sin desplazamiento. */
@@ -31,7 +33,13 @@ export function SectionNav({ items, label }: { items: NavItem[]; label: string }
                     : "border-line bg-surface text-ink hover:border-blue-600",
                 )}
               >
-                {item.label}
+                <span className="flex-1">{item.label}</span>
+                {item.badge ? (
+                  <span className="ml-2 rounded-full bg-sun-400 px-2 py-0.5 text-xs font-bold text-ink">
+                    {item.badge}
+                    <span className="sr-only"> pendientes</span>
+                  </span>
+                ) : null}
               </Link>
             </li>
           );

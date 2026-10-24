@@ -16,6 +16,7 @@ export function ProfileEditor({ business }: { business: Business }) {
       email: business.contactEmail,
     },
     validate: forms.profile,
+    keepSavedOnLeave: true,
   });
 
   return (

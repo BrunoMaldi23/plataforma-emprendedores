@@ -25,6 +25,21 @@ export function password(value: string): string | undefined {
   return undefined;
 }
 
+export interface PasswordCheck {
+  id: "length" | "letter" | "number";
+  label: string;
+  ok: boolean;
+}
+
+/** Requisitos de contraseña evaluados en vivo; `password()` usa las mismas reglas. */
+export function passwordChecks(value: string): PasswordCheck[] {
+  return [
+    { id: "length", label: "Al menos 8 caracteres", ok: value.length >= 8 },
+    { id: "letter", label: "Una letra", ok: /[A-Za-z]/.test(value) },
+    { id: "number", label: "Un número", ok: /\d/.test(value) },
+  ];
+}
+
 export function matches(value: string, other: string): string | undefined {
   return value === other ? undefined : "Las contraseñas no coinciden.";
 }
@@ -75,6 +90,55 @@ export const forms = {
       tagline: required(values.tagline, "una frase breve"),
       description: minLength(values.description, 30, "la descripción"),
       email: email(values.email),
+    });
+  },
+  business(values: {
+    name: string;
+    tagline: string;
+    description: string;
+    email: string;
+    categoryId: string;
+    location: string;
+    tags: string;
+  }) {
+    const tags = values.tags.split(",").map((t) => t.trim()).filter(Boolean);
+    return compact<"name" | "tagline" | "description" | "email" | "categoryId" | "location" | "tags">({
+      name: minLength(values.name, 3, "el nombre del negocio"),
+      tagline: required(values.tagline, "una frase breve"),
+      description: minLength(values.description, 30, "la descripción"),
+      email: email(values.email),
+      categoryId: values.categoryId ? undefined : "Elige un rubro.",
+      location: values.location ? undefined : "Elige el sector.",
+      tags: tags.length > 6 ? "Usa como máximo 6 etiquetas." : tags.some((t) => t.length > 24) ? "Cada etiqueta puede tener hasta 24 caracteres." : undefined,
+    });
+  },
+  category(values: { name: string; description: string }) {
+    return compact<"name" | "description">({
+      name: minLength(values.name, 3, "el nombre del rubro"),
+      description: minLength(values.description, 10, "una descripción breve"),
+    });
+  },
+  opportunity(values: {
+    title: string;
+    summary: string;
+    description: string;
+    organization: string;
+    startDate: string;
+    deadline: string;
+    url: string;
+  }) {
+    const url = values.url.trim();
+    return compact<"title" | "summary" | "description" | "organization" | "startDate" | "deadline" | "url">({
+      title: minLength(values.title, 5, "el título"),
+      summary: minLength(values.summary, 10, "el resumen"),
+      description: minLength(values.description, 20, "la descripción"),
+      organization: required(values.organization, "la entidad responsable"),
+      startDate: required(values.startDate, "la fecha de inicio"),
+      deadline:
+        values.deadline && values.startDate && values.deadline < values.startDate
+          ? "El cierre no puede ser anterior al inicio."
+          : undefined,
+      url: url && !/^https?:\/\/\S+$/.test(url) ? "Escribe un enlace que empiece con http:// o https://." : undefined,
     });
   },
   offering(values: { name: string; description: string; price: string }) {

@@ -1,32 +1,29 @@
 import { cn } from "@/lib/cn";
+import { categoryTheme } from "../category-theme";
 
 /** Sustituto de imagen mientras no existan fotos reales (se evita usar imágenes de stock engañosas). */
-const tones: Record<string, string> = {
-  gastronomia: "bg-sun-500 text-ink",
-  artesania: "bg-sun-600 text-ink",
-  moda: "bg-sun-100 text-ink",
-  servicios: "bg-blue-600 text-white",
-  tecnologia: "bg-blue-100 text-blue-700",
-  turismo: "bg-leaf-600 text-white",
-  agro: "bg-leaf-400 text-ink",
-};
-
 export function Monogram({
   name,
   categoryId,
   size = "md",
+  className,
 }: {
   name: string;
   categoryId: string;
-  size?: "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
+  className?: string;
 }) {
+  const sizes = { sm: "size-10 text-base", md: "size-14 text-xl", lg: "size-20 text-3xl", xl: "size-20 rounded-2xl text-4xl",
+    "2xl": "size-24 rounded-2xl text-4xl sm:size-28 sm:text-5xl",
+  } as const;
   return (
     <span
       aria-hidden="true"
       className={cn(
         "flex shrink-0 items-center justify-center rounded-lg font-display font-bold",
-        size === "lg" ? "size-20 text-3xl" : "size-14 text-xl",
-        tones[categoryId] ?? "bg-blue-100 text-blue-700",
+        sizes[size],
+        categoryTheme(categoryId).avatar,
+        className,
       )}
     >
       {name.trim().charAt(0).toUpperCase()}

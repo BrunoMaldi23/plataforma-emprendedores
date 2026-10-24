@@ -52,6 +52,13 @@ export interface Offering {
   priceClp?: number;
 }
 
+/** Resumen de la oferta de un negocio, para mostrar en tarjetas. */
+export interface OfferingStats {
+  count: number;
+  /** Precio referencial más bajo; ausente si todo es "a cotizar". */
+  fromPriceClp?: number;
+}
+
 export type OpportunityType =
   | "feria"
   | "capacitacion"
@@ -91,9 +98,13 @@ export interface ContactRequest {
   status: ContactRequestStatus;
 }
 
+export type ActivityArea = "business" | "opportunity" | "category" | "system";
+
 export interface ActivityEntry {
   id: string;
+  /** ISO yyyy-mm-dd o yyyy-mm-ddThh:mm */
   at: string;
+  area: ActivityArea;
   actor: string;
   action: string;
   target: string;

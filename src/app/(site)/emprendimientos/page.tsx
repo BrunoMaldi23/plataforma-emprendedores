@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/container";
 import { DemoBadge } from "@/components/ui/badge";
 import { PageHeader } from "@/components/ui/page-header";
 import { CatalogExplorer } from "@/features/catalog/components/catalog-explorer";
-import { listBusinesses, listCategories, listLocations } from "@/lib/repository";
+import { listBusinesses, listCategories, listLocations, listOfferingStats } from "@/lib/repository";
 
 export const metadata: Metadata = {
   title: "Emprendimientos",
@@ -20,7 +20,7 @@ export default function CatalogPage() {
         description="Busca por nombre o palabra clave y filtra por rubro y sector. Los negocios de esta versión son ficticios."
       />
       <Suspense fallback={<p role="status" className="text-muted">Cargando catálogo…</p>}>
-        <CatalogExplorer businesses={listBusinesses()} categories={listCategories()} locations={listLocations()} />
+        <CatalogExplorer businesses={listBusinesses()} categories={listCategories()} locations={listLocations()} stats={listOfferingStats()} />
       </Suspense>
     </Container>
   );

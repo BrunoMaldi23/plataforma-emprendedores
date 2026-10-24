@@ -56,5 +56,5 @@ multicanal, autenticación/autorización productivas, persistencia real.
 
 ## Riesgos
 - Confundir contenido ficticio con real → etiquetado "Demostración" visible en todo contenido y avisos.
-- Autorización solo visual en el prototipo → documentado; la real va en el backend Spring Boot (Spring Security + autorización por rol en servidor).
+- Autorización solo visual en el prototipo → documentado; la real la implementa el backend (a cargo de otra persona) con autorización por rol en servidor.
 - Alcance amplio → priorizar catálogo y oportunidades; admin read-mostly.

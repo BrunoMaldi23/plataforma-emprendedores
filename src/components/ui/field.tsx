@@ -1,3 +1,4 @@
+import type { LucideIcon } from "lucide-react";
 import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 
@@ -51,18 +52,34 @@ export function TextField({
   label,
   error,
   hint,
+  icon: Icon,
+  trailing,
   className,
   ...rest
-}: BaseProps & Omit<InputHTMLAttributes<HTMLInputElement>, "id">) {
+}: BaseProps & {
+  /** Icono decorativo a la izquierda del campo. */
+  icon?: LucideIcon;
+  /** Elemento interactivo a la derecha (por ejemplo, mostrar/ocultar contraseña). */
+  trailing?: ReactNode;
+} & Omit<InputHTMLAttributes<HTMLInputElement>, "id">) {
   return (
     <FieldShell id={id} label={label} error={error} hint={hint}>
-      <input
-        id={id}
-        className={cn(control, borderFor(error), className)}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={describedBy(id, error, hint)}
-        {...rest}
-      />
+      <div className="relative">
+        {Icon ? (
+          <Icon
+            aria-hidden="true"
+            className="pointer-events-none absolute left-3 top-1/2 size-5 -translate-y-1/2 text-muted"
+          />
+        ) : null}
+        <input
+          id={id}
+          className={cn(control, borderFor(error), Icon ? "pl-10" : undefined, trailing ? "pr-12" : undefined, className)}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={describedBy(id, error, hint)}
+          {...rest}
+        />
+        {trailing ? <div className="absolute right-1 top-1/2 -translate-y-1/2">{trailing}</div> : null}
+      </div>
     </FieldShell>
   );
 }
