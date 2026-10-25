@@ -106,7 +106,7 @@ export const forms = {
       name: minLength(values.name, 3, "el nombre del negocio"),
       tagline: required(values.tagline, "una frase breve"),
       description: minLength(values.description, 30, "la descripción"),
-      email: email(values.email),
+      email: values.email.trim() ? email(values.email) : "Ingresa el correo de contacto.",
       categoryId: values.categoryId ? undefined : "Elige un rubro.",
       location: values.location ? undefined : "Elige el sector.",
       tags: tags.length > 6 ? "Usa como máximo 6 etiquetas." : tags.some((t) => t.length > 24) ? "Cada etiqueta puede tener hasta 24 caracteres." : undefined,

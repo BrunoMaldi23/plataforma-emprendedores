@@ -12,7 +12,17 @@ import { formatDateTime, opportunityTypeLabel } from "@/lib/format";
 import { computeOverview, countByCategory, countByType } from "../lib/metrics";
 import { useAdmin } from "../state/admin-store";
 
-function BarRow({ label, count, max, tone = "bg-blue-600" }: { label: string; count: number; max: number; tone?: string }) {
+function BarRow({
+  label,
+  count,
+  max,
+  tone = "bg-blue-600",
+}: {
+  label: string;
+  count: number;
+  max: number;
+  tone?: string;
+}) {
   return (
     <li className="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 sm:grid-cols-[11rem_1fr_auto]">
       <span className="text-sm font-medium">{label}</span>
@@ -27,7 +37,17 @@ function BarRow({ label, count, max, tone = "bg-blue-600" }: { label: string; co
   );
 }
 
-function Panel({ id, title, action, children }: { id: string; title: string; action?: React.ReactNode; children: React.ReactNode }) {
+function Panel({
+  id,
+  title,
+  action,
+  children,
+}: {
+  id: string;
+  title: string;
+  action?: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
     <section aria-labelledby={id} className="rounded-lg border border-line bg-surface p-6">
       <div className="flex items-center justify-between gap-3">
@@ -42,7 +62,7 @@ function Panel({ id, title, action, children }: { id: string; title: string; act
 }
 
 export function AdminOverview() {
-  const { businesses, opportunities, categories, activity, actions } = useAdmin();
+  const { businesses, opportunities, categories, activity, actions, isPending } = useAdmin();
   const o = computeOverview(businesses, opportunities);
   const byCategory = countByCategory(businesses, categories);
   const byType = countByType(opportunities, opportunityTypes);
@@ -54,7 +74,12 @@ export function AdminOverview() {
 
   const stats = [
     { label: "Emprendimientos", value: o.businesses, note: `${o.approved} aprobados` },
-    { label: "Pendientes de revisión", value: o.pending, note: o.pending ? "Requieren una decisión" : "Todo al día", warn: o.pending > 0 },
+    {
+      label: "Pendientes de revisión",
+      value: o.pending,
+      note: o.pending ? "Requieren una decisión" : "Todo al día",
+      warn: o.pending > 0,
+    },
     { label: "Oportunidades", value: o.opportunities, note: `${o.published} publicadas · ${o.drafts} en borrador` },
     { label: "Abiertas ahora", value: o.openOpportunities, note: "Publicadas y con postulación abierta" },
   ];
@@ -70,7 +95,9 @@ export function AdminOverview() {
         {stats.map((s) => (
           <div key={s.label} className="rounded-lg border border-line bg-surface p-5">
             <dt className="text-sm text-muted">{s.label}</dt>
-            <dd className={`mt-1 font-display text-4xl font-bold ${s.warn ? "text-sun-600" : "text-blue-700"}`}>{s.value}</dd>
+            <dd className={`mt-1 font-display text-4xl font-bold ${s.warn ? "text-sun-600" : "text-blue-700"}`}>
+              {s.value}
+            </dd>
             <p className="mt-1 text-sm text-muted">{s.note}</p>
           </div>
         ))}
@@ -81,7 +108,10 @@ export function AdminOverview() {
           id="atencion"
           title="Requiere atención"
           action={
-            <Link href="/admin/emprendimientos" className="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 hover:underline">
+            <Link
+              href="/admin/emprendimientos"
+              className="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 hover:underline"
+            >
               Ver todos <ArrowRight aria-hidden="true" className="size-4" />
             </Link>
           }
@@ -98,7 +128,7 @@ export function AdminOverview() {
                   <h3 className="text-sm font-semibold text-muted">Perfiles por revisar ({pending.length})</h3>
                   <ul className="mt-2 divide-y divide-line">
                     {pending.slice(0, 4).map((b) => (
-                      <li key={b.id} className="flex flex-wrap items-center gap-3 py-3">
+                      <li key={b.id} className="animate-enter flex flex-wrap items-center gap-3 py-3">
                         <Monogram name={b.name} categoryId={b.categoryId} size="sm" />
                         <div className="min-w-0 flex-1">
                           <p className="font-semibold">{b.name}</p>
@@ -108,10 +138,19 @@ export function AdminOverview() {
                         </div>
                         <IfCan permission="admin:write">
                           <div className="flex gap-2">
-                            <Button size="sm" onClick={() => actions.setBusinessStatus(b, "approved")}>
+                            <Button
+                              size="sm"
+                              loading={isPending(b.id)}
+                              onClick={() => actions.setBusinessStatus(b, "approved")}
+                            >
                               Aprobar
                             </Button>
-                            <Button size="sm" variant="secondary" onClick={() => actions.setBusinessStatus(b, "hidden")}>
+                            <Button
+                              size="sm"
+                              variant="secondary"
+                              disabled={isPending(b.id)}
+                              onClick={() => actions.setBusinessStatus(b, "hidden")}
+                            >
                               Ocultar
                             </Button>
                           </div>
@@ -126,13 +165,17 @@ export function AdminOverview() {
                   <h3 className="text-sm font-semibold text-muted">Oportunidades en borrador ({drafts.length})</h3>
                   <ul className="mt-2 divide-y divide-line">
                     {drafts.slice(0, 3).map((d) => (
-                      <li key={d.id} className="flex flex-wrap items-center gap-3 py-3">
+                      <li key={d.id} className="animate-enter flex flex-wrap items-center gap-3 py-3">
                         <div className="min-w-0 flex-1">
                           <p className="font-semibold">{d.title}</p>
                           <p className="text-sm text-muted">{opportunityTypeLabel[d.type]}</p>
                         </div>
                         <IfCan permission="admin:write">
-                          <Button size="sm" onClick={() => actions.setOpportunityPublished(d, true)}>
+                          <Button
+                            size="sm"
+                            loading={isPending(d.id)}
+                            onClick={() => actions.setOpportunityPublished(d, true)}
+                          >
                             Publicar
                           </Button>
                         </IfCan>
@@ -149,7 +192,10 @@ export function AdminOverview() {
           id="reciente"
           title="Actividad reciente"
           action={
-            <Link href="/admin/actividad" className="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 hover:underline">
+            <Link
+              href="/admin/actividad"
+              className="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 hover:underline"
+            >
               Ver toda <ArrowRight aria-hidden="true" className="size-4" />
             </Link>
           }

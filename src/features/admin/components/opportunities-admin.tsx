@@ -18,8 +18,8 @@ import { formatDate, opportunityStatusLabel, opportunityTypeLabel } from "@/lib/
 import { normalize } from "@/lib/text";
 import type { Opportunity, OpportunityStatus, OpportunityType } from "@/types";
 import { useAdmin } from "../state/admin-store";
-import { ConfirmDialog } from "./confirm-dialog";
-import { FilterChips } from "./filter-chips";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { FilterChips } from "@/components/ui/filter-chips";
 import { OpportunityForm } from "./opportunity-form";
 
 type PublicationFilter = "all" | "published" | "draft";

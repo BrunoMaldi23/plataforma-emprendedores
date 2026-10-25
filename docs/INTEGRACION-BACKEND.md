@@ -25,10 +25,10 @@ quien desarrolle el backend (los nombres de rutas de abajo son una propuesta).
 | Listar oportunidades (por categoría) / detalle por `slug` | público | solo `published`; **`status` (open/upcoming/closed) es un dato, no se deriva de la fecha** |
 | Enviar solicitud de contacto a un negocio | visitante | `{ name, email, message }` |
 | Registro / login / sesión actual | visitante | roles: `visitor`, `entrepreneur`, `admin`, `municipal` |
-| Ver y editar mi negocio, mis productos/servicios | emprendedor | solo su propio negocio |
+| Ver y editar mi negocio (nombre, frase, descripción, rubro, sector, correo, Instagram, etiquetas ≤ 6) y **crear, editar y eliminar** mis productos/servicios | emprendedor | solo su propio negocio |
 | Listar mis solicitudes y cambiar estado (`new`/`answered`/`archived`) | emprendedor | |
 | Marcar/desmarcar interés en una oportunidad y listar las mías | emprendedor | |
-| Panel: listar todos los emprendimientos; cambiar estado (`approved`/`pending`/`hidden`) | admin (escritura), municipal (solo lectura) | |
+| Panel: listar todos los emprendimientos; **crear, editar, eliminar**; cambiar estado (`approved`/`pending`/`hidden`) | admin (escritura), municipal (solo lectura) | `slug` único; `foundedYear` opcional |
 | Panel: crear, editar, publicar/despublicar, cerrar/reabrir, eliminar (borradores) oportunidades | admin | `slug` único |
 | Panel: crear, editar, eliminar rubros | admin | **no se puede eliminar un rubro con emprendimientos** |
 | Panel: bitácora de actividad (listar, filtrar por área) | admin y municipal | cada acción de escritura del panel debe generar un registro `{ at, area, actor, action, target }` |
@@ -50,6 +50,11 @@ oportunidad: título ≥ 5, resumen ≥ 10, descripción ≥ 20, entidad e inici
 - **CORS / URL base:** variable de entorno propuesta `NEXT_PUBLIC_API_URL` (solo URLs públicas; sin secretos en el repositorio ni en el cliente).
 - **Paginación:** hoy no existe (listas pequeñas); acordar cuando el volumen crezca.
 - **Contenido ficticio:** al conectar datos reales, retirar las insignias «Datos de demostración» y los avisos de demostración (buscar `DemoBadge`, `Alert` de demostración y los textos «(demo)» de `src/data`).
+
+## «Deshacer» y estados de carga
+La interfaz ofrece **Deshacer** en un aviso (toast) tras cada cambio. Hoy revierte el estado local; con backend hay dos opciones a acordar: (a) borrado lógico +
+operación de restauración, o (b) volver a enviar el estado anterior (los mismos `PUT`/`POST`). Mientras una acción está en curso, el botón muestra «procesando»
+(`useRowFeedback`, `simulateLatency` en `src/lib/use-row-feedback.ts` se reemplaza por la promesa real de la llamada).
 
 ## Referencia opcional
 La carpeta `backend/` (Spring Boot + PostgreSQL, solo lectura de catálogo y oportunidades) y `compose.yaml` se crearon como **borrador de referencia**

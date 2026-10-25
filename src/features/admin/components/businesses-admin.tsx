@@ -17,8 +17,8 @@ import { normalize } from "@/lib/text";
 import type { Business, ReviewStatus } from "@/types";
 import { useAdmin } from "../state/admin-store";
 import { BusinessForm } from "./business-form";
-import { ConfirmDialog } from "./confirm-dialog";
-import { FilterChips } from "./filter-chips";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { FilterChips } from "@/components/ui/filter-chips";
 
 const tone = { approved: "success", pending: "warning", hidden: "neutral" } as const;
 type StatusFilter = ReviewStatus | "all";

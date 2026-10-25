@@ -14,7 +14,7 @@ import { formatDateTime } from "@/lib/format";
 import { normalize } from "@/lib/text";
 import type { ActivityArea } from "@/types";
 import { useAdmin } from "../state/admin-store";
-import { FilterChips } from "./filter-chips";
+import { FilterChips } from "@/components/ui/filter-chips";
 
 type AreaFilter = ActivityArea | "all";
 

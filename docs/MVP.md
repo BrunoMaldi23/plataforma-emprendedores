@@ -9,8 +9,8 @@ Todo el contenido es ficticio y está identificado como tal. Ver `_bmad-output/p
 | Ficha | `/emprendimientos/[slug]` | Funcional; contacto **simulado** (valida, no envía) |
 | Oportunidades | `/oportunidades`, `/[slug]` | Funcional: filtro por categoría, detalle, «Me interesa» (localStorage) |
 | Acceso | `/login`, `/registro` | Validación y estados; **sin cuenta real**; selector de rol demo |
-| Emprendedor | `/dashboard/*` | Perfil y productos editables **en memoria**, solicitudes con estados locales, intereses guardados |
-| Admin | `/admin/*` | Estado compartido entre secciones (en memoria): resumen con pendientes y actividad reciente, emprendimientos (búsqueda, filtros con contadores, aprobar/ocultar), oportunidades (crear, editar, publicar, cerrar/reabrir, eliminar borradores), rubros (crear, editar, eliminar si no están en uso), actividad con filtros y exportación CSV. Cada acción queda en la bitácora |
+| Emprendedor | `/dashboard/*` | Estado compartido entre secciones (en memoria): perfil completo editable (rubro, sector, Instagram, etiquetas) con «guardar/descartar», productos y servicios con alta, edición y eliminación, solicitudes con filtros, búsqueda y estados, intereses guardados. Avisos con «Deshacer» y resumen siempre coherente |
+| Admin | `/admin/*` | Estado compartido entre secciones (en memoria): resumen con pendientes y actividad reciente, emprendimientos (búsqueda, filtros con contadores, aprobar/ocultar), oportunidades (crear, editar, publicar, cerrar/reabrir, eliminar borradores), rubros (crear, editar, eliminar si no están en uso), actividad con filtros y exportación CSV. Emprendimientos: crear, editar, eliminar, aprobar/ocultar. Cada acción queda en la bitácora y se puede deshacer |
 | Municipal | `/admin` | Mismo panel en solo lectura (sin botones de edición) |
 | Errores | `/acceso-denegado`, 404, error global | Implementados |
 

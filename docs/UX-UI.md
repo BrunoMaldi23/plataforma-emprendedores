@@ -81,3 +81,11 @@ Con `keepSavedOnLeave` (perfil del emprendedor) se conserva lo que sí se guard�
 **Mapa del hero (v2):** rotación automática de los ejes cada 5 s con barra de progreso; se pausa con el cursor o el foco, tiene botón «Pausar/Reanudar» (esquina del mapa), elegir un nodo a mano la detiene y no arranca con `prefers-reduced-motion`.
 Mientras rota sola la tarjeta no se anuncia a lectores de pantalla (`aria-live="off"`); en pausa o con selección manual sí (`polite`). Foco de luz del color del eje que sigue al nodo,
 satélites que orbitan en el anillo exterior y entrada escalonada de los nodos al cargar. Cada eje muestra una cifra calculada sobre los datos de demostración.
+
+## Retroalimentación y transiciones (paneles)
+- **Avisos** (`ui/toast.tsx`, `ToastProvider` en el layout del sitio): aparecen y salen con transición, se anuncian a lectores de pantalla y ofrecen **«Deshacer»** tras cada cambio (cierre automático a los 4,5 s; 8 s si hay acción).
+- **Acción en curso:** el botón pulsado muestra «procesando», se deshabilitan las demás acciones de esa fila y, al terminar, la fila/tarjeta se **resalta** un instante (`animate-flash`) para ver dónde quedó.
+- **Diálogos** (`ui/dialog.tsx`): entran y salen con fundido, el fondo también; el contenido permanece montado durante la animación de cierre. Confirmación (`ui/confirm-dialog.tsx`) para eliminar.
+- **Cambio de sección** en los paneles: el contenido entra con una transición breve (`panel-content.tsx`); el estado compartido de cada panel vive en su layout (`admin-store`, `dashboard-store`), así el resumen y el detalle siempre coinciden.
+- **Perfil:** botón «Guardar» solo con cambios, «Descartar cambios» y texto de estado (`aria-live`).
+- Todo el movimiento se desactiva con `prefers-reduced-motion`.

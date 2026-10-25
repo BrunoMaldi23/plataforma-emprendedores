@@ -12,7 +12,7 @@ import { forms } from "@/lib/validation";
 import type { Category } from "@/types";
 import { countByCategory } from "../lib/metrics";
 import { useAdmin } from "../state/admin-store";
-import { ConfirmDialog } from "./confirm-dialog";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
 function CategoryForm({
   category,

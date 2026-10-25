@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Container } from "@/components/ui/container";
 import { DemoBadge } from "@/components/ui/badge";
 import { RoleSummary } from "@/features/auth/components/role-summary";
+import { PanelContent } from "./panel-content";
 import { SectionNav, type NavItem } from "./section-nav";
 
 /** Estructura común de las áreas privadas (emprendedor y administración). */
@@ -30,7 +31,7 @@ export function PanelShell({
           {nav ?? <SectionNav items={items} label={navLabel} />}
           <RoleSummary />
         </aside>
-        <div className="min-w-0 space-y-8">{children}</div>
+        <PanelContent>{children}</PanelContent>
       </div>
     </Container>
   );
